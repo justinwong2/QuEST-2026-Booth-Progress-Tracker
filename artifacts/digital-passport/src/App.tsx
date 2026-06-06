@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle2, Lock, X, AlertCircle, Trophy, User, IdCard, Loader2, RefreshCw } from "lucide-react";
+import { CheckCircle2, Lock, X, AlertCircle, Trophy, User, IdCard, Loader2, RefreshCw, Flag } from "lucide-react";
 
 const SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbz6d_vrgxFcqGpxMqrYieueh8vN41lXHXxkjTO04A4EJ5iUlg2Dln_J_JoWOFaZrBw/exec";
@@ -341,7 +341,9 @@ export default function App() {
           data-testid="progress-container"
         >
           <div className="flex items-center justify-between mb-3">
-            <span className="text-white font-semibold text-sm">Progress</span>
+            <span className="text-white font-semibold text-sm flex items-center gap-1.5">
+              <Flag size={14} className="text-white/60" /> Progress
+            </span>
             <span className="text-white font-bold text-lg" data-testid="progress-count">
               {completedCount} / {BOOTHS.length} Completed
             </span>
@@ -349,7 +351,7 @@ export default function App() {
           <div className="w-full h-3 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.1)" }}>
             <motion.div
               className="h-full rounded-full"
-              style={{ background: "linear-gradient(90deg, #60a5fa, #a78bfa, #34d399)" }}
+              style={{ background: "linear-gradient(90deg, #f97316, #facc15, #22c55e)" }}
               initial={{ width: 0 }}
               animate={{ width: `${(completedCount / BOOTHS.length) * 100}%` }}
               transition={{ duration: 0.6, ease: "easeOut" }}
