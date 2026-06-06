@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle2, Lock, X, AlertCircle, Trophy, User, IdCard, Loader2, RefreshCw, Flag } from "lucide-react";
+import questLogo from "@assets/Screenshot_20260606_135247_Samsung_Browser_1780725399816.jpg";
 
 const SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbz6d_vrgxFcqGpxMqrYieueh8vN41lXHXxkjTO04A4EJ5iUlg2Dln_J_JoWOFaZrBw/exec";
@@ -189,7 +190,8 @@ export default function App() {
         >
           {/* Badge */}
           <div className="text-center mb-6">
-            <div className="inline-flex items-center gap-2 bg-white/10 px-4 py-1.5 rounded-full text-sm text-white/70 font-medium mb-4 border border-white/10">
+            <div className="inline-flex items-center gap-2 bg-white/10 pl-1 pr-4 py-1 rounded-full text-sm text-white/70 font-medium mb-4 border border-white/10">
+              <img src={questLogo} alt="QuEST" className="w-7 h-7 rounded-lg object-cover object-center" />
               QuEST 2026
             </div>
             <h1 className="text-3xl font-extrabold text-white tracking-tight mb-1">Booth Explorer</h1>
@@ -276,7 +278,8 @@ export default function App() {
           transition={{ duration: 0.5 }}
           className="text-center mb-6"
         >
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur px-4 py-1.5 rounded-full text-sm text-white/70 font-medium mb-4 border border-white/10">
+          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur pl-1 pr-4 py-1 rounded-full text-sm text-white/70 font-medium mb-4 border border-white/10">
+            <img src={questLogo} alt="QuEST" className="w-7 h-7 rounded-lg object-cover object-center" />
             QuEST 2026
           </div>
           <h1 className="text-3xl font-extrabold text-white tracking-tight mb-1">Booth Explorer</h1>
