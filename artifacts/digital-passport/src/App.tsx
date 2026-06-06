@@ -3,12 +3,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle2, Lock, X, AlertCircle, Trophy } from "lucide-react";
 
 const boothMap = {
-  "Quality Improvement": "booth1",
-  "Patient Safety":      "booth2",
-  "Innovation":          "booth3",
-  "Sustainability":      "booth4",
-  "Experience":          "booth5",
-  "Staff Wellness":      "booth6",
+  "Quality Improvement": "quality1",
+  "Patient Safety":      "safety2",
+  "Innovation":          "innovation3",
+  "Sustainability":      "sustain4",
+  "Experience":          "experience5",
+  "Staff Wellness":      "wellness6",
 };
 
 const BOOTHS = [
