@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Digital Passport"
+version = "1.0.0"
+id = "artifacts/digital-passport"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25814
+
+[services.development]
+run = "pnpm --filter @workspace/digital-passport run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/digital-passport", "run", "build" ]
+publicDir = "artifacts/digital-passport/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25814"
+BASE_PATH = "/"
