@@ -87,6 +87,7 @@ export default function App() {
   const [stampedId, setStampedId]       = useState<number | null>(null);
   const [logging, setLogging]           = useState(false);
   const [showCelebration, setShowCelebration] = useState(false);
+  const [confirmReset, setConfirmReset] = useState(false);
 
   const inputRef    = useRef<HTMLInputElement>(null);
   const nicknameRef = useRef<HTMLInputElement>(null);
@@ -105,6 +106,17 @@ export default function App() {
   useEffect(() => {
     if (!visitor) setTimeout(() => nicknameRef.current?.focus(), 100);
   }, [visitor]);
+
+  function resetPassport() {
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(VISITOR_KEY);
+    setProgress({});
+    setVisitor(null);
+    setNickname("");
+    setStaffId("");
+    setShowCelebration(false);
+    setConfirmReset(false);
+  }
 
   function startPassport() {
     if (!nickname.trim()) { setOnboardError("Please enter your nickname"); return; }
@@ -273,6 +285,50 @@ export default function App() {
             <span className="text-white/30 mx-1">·</span>
             <span className="text-white/40 text-xs">{visitor.staffId}</span>
           </p>
+
+          {/* Reset */}
+          <div className="mt-4 flex items-center justify-center gap-2">
+            <AnimatePresence mode="wait">
+              {!confirmReset ? (
+                <motion.button
+                  key="reset-btn"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setConfirmReset(true)}
+                  className="text-xs text-white/30 hover:text-white/60 transition-colors underline underline-offset-2"
+                  data-testid="button-reset"
+                >
+                  Reset passport
+                </motion.button>
+              ) : (
+                <motion.div
+                  key="reset-confirm"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="flex items-center gap-2 bg-red-500/10 border border-red-500/20 rounded-full px-4 py-1.5"
+                >
+                  <span className="text-xs text-red-300">Clear all progress?</span>
+                  <button
+                    onClick={resetPassport}
+                    className="text-xs font-bold text-red-400 hover:text-red-300 transition-colors"
+                    data-testid="button-confirm-reset"
+                  >
+                    Yes, reset
+                  </button>
+                  <span className="text-white/20 text-xs">·</span>
+                  <button
+                    onClick={() => setConfirmReset(false)}
+                    className="text-xs text-white/40 hover:text-white/70 transition-colors"
+                    data-testid="button-cancel-reset"
+                  >
+                    Cancel
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </motion.div>
 
         {/* Progress */}
