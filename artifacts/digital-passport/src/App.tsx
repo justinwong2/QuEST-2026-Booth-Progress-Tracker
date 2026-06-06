@@ -6,21 +6,21 @@ const SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbz6d_vrgxFcqGpxMqrYieueh8vN41lXHXxkjTO04A4EJ5iUlg2Dln_J_JoWOFaZrBw/exec";
 
 const boothMap = {
-  "Quality Improvement": "quality1",
-  "Patient Safety":      "safety2",
-  "Innovation":          "innovation3",
-  "Sustainability":      "sustain4",
-  "Experience":          "experience5",
-  "Staff Wellness":      "wellness6",
+  "People Culture":                    "culture1",
+  "Digital Think Tank":                "dtt2",
+  "Quality Management":                "quality3",
+  "Manpower Transformation":           "manpower4",
+  "Appropriate and Value-Based Care":  "avbc5",
+  "Enterprise Risk Management":        "erm6",
 };
 
 const BOOTHS = [
-  { id: 1, name: "Quality Improvement", sheetId: "booth1", color: "#E53E3E", accent: "#FC8181", password: boothMap["Quality Improvement"] },
-  { id: 2, name: "Patient Safety",      sheetId: "booth2", color: "#3182CE", accent: "#63B3ED", password: boothMap["Patient Safety"]      },
-  { id: 3, name: "Innovation",          sheetId: "booth3", color: "#38A169", accent: "#68D391", password: boothMap["Innovation"]          },
-  { id: 4, name: "Sustainability",      sheetId: "booth4", color: "#DD6B20", accent: "#F6AD55", password: boothMap["Sustainability"]      },
-  { id: 5, name: "Experience",          sheetId: "booth5", color: "#805AD5", accent: "#B794F4", password: boothMap["Experience"]          },
-  { id: 6, name: "Staff Wellness",      sheetId: "booth6", color: "#0694A2", accent: "#76E4F7", password: boothMap["Staff Wellness"]      },
+  { id: 1, name: "People Culture",                   sheetId: "booth1", color: "#E53E3E", accent: "#FC8181", password: boothMap["People Culture"]                   },
+  { id: 2, name: "Digital Think Tank",               sheetId: "booth2", color: "#3182CE", accent: "#63B3ED", password: boothMap["Digital Think Tank"]               },
+  { id: 3, name: "Quality Management",               sheetId: "booth3", color: "#38A169", accent: "#68D391", password: boothMap["Quality Management"]               },
+  { id: 4, name: "Manpower Transformation",          sheetId: "booth4", color: "#DD6B20", accent: "#F6AD55", password: boothMap["Manpower Transformation"]          },
+  { id: 5, name: "Appropriate and Value-Based Care", sheetId: "booth5", color: "#805AD5", accent: "#B794F4", password: boothMap["Appropriate and Value-Based Care"] },
+  { id: 6, name: "Enterprise Risk Management",       sheetId: "booth6", color: "#0694A2", accent: "#76E4F7", password: boothMap["Enterprise Risk Management"]       },
 ];
 
 const STORAGE_KEY = "passport-progress";
