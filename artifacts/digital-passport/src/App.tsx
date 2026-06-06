@@ -15,12 +15,12 @@ const boothMap = {
 };
 
 const BOOTHS = [
-  { id: 1, name: "Quality Improvement", color: "#E53E3E", accent: "#FC8181", password: boothMap["Quality Improvement"] },
-  { id: 2, name: "Patient Safety",      color: "#3182CE", accent: "#63B3ED", password: boothMap["Patient Safety"]      },
-  { id: 3, name: "Innovation",          color: "#38A169", accent: "#68D391", password: boothMap["Innovation"]          },
-  { id: 4, name: "Sustainability",      color: "#DD6B20", accent: "#F6AD55", password: boothMap["Sustainability"]      },
-  { id: 5, name: "Experience",          color: "#805AD5", accent: "#B794F4", password: boothMap["Experience"]          },
-  { id: 6, name: "Staff Wellness",      color: "#0694A2", accent: "#76E4F7", password: boothMap["Staff Wellness"]      },
+  { id: 1, name: "Quality Improvement", sheetId: "booth1", color: "#E53E3E", accent: "#FC8181", password: boothMap["Quality Improvement"] },
+  { id: 2, name: "Patient Safety",      sheetId: "booth2", color: "#3182CE", accent: "#63B3ED", password: boothMap["Patient Safety"]      },
+  { id: 3, name: "Innovation",          sheetId: "booth3", color: "#38A169", accent: "#68D391", password: boothMap["Innovation"]          },
+  { id: 4, name: "Sustainability",      sheetId: "booth4", color: "#DD6B20", accent: "#F6AD55", password: boothMap["Sustainability"]      },
+  { id: 5, name: "Experience",          sheetId: "booth5", color: "#805AD5", accent: "#B794F4", password: boothMap["Experience"]          },
+  { id: 6, name: "Staff Wellness",      sheetId: "booth6", color: "#0694A2", accent: "#76E4F7", password: boothMap["Staff Wellness"]      },
 ];
 
 const STORAGE_KEY = "passport-progress";
@@ -58,12 +58,13 @@ function saveVisitor(v: Visitor) {
   localStorage.setItem(VISITOR_KEY, JSON.stringify(v));
 }
 
-async function logToSheet(visitor: Visitor, boothName: string, boothSheetId: string) {
+async function logToSheet(visitor: Visitor, boothName: string, sheetId: string) {
   const params = new URLSearchParams({
     nickname:  visitor.nickname,
     staffId:   visitor.staffId,
-    boothId:   boothSheetId,
+    boothId:   sheetId,
     boothName,
+    status:    "done",
     timestamp: new Date().toISOString(),
   });
   try {
@@ -140,7 +141,7 @@ export default function App() {
 
       // Log to Google Sheet (fire-and-forget)
       setLogging(true);
-      await logToSheet(visitor, booth.name, booth.password);
+      await logToSheet(visitor, booth.name, booth.sheetId);
       setLogging(false);
     } else {
       setPwError("Wrong password, try again");
