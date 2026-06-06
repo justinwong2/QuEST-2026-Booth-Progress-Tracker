@@ -2,13 +2,22 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle2, Lock, X, AlertCircle, Trophy } from "lucide-react";
 
+const boothMap = {
+  "Quality Improvement": "booth1",
+  "Patient Safety":      "booth2",
+  "Innovation":          "booth3",
+  "Sustainability":      "booth4",
+  "Experience":          "booth5",
+  "Staff Wellness":      "booth6",
+};
+
 const BOOTHS = [
-  { id: 1, name: "Welcome Booth",  color: "#E53E3E", accent: "#FC8181", password: "welcome2025" },
-  { id: 2, name: "Innovation Lab", color: "#3182CE", accent: "#63B3ED", password: "innovate" },
-  { id: 3, name: "Green Zone",     color: "#38A169", accent: "#68D391", password: "gogreen" },
-  { id: 4, name: "Maker Space",    color: "#DD6B20", accent: "#F6AD55", password: "maker123" },
-  { id: 5, name: "Tech Hub",       color: "#805AD5", accent: "#B794F4", password: "tech2025" },
-  { id: 6, name: "Chill Corner",   color: "#0694A2", accent: "#76E4F7", password: "relax" },
+  { id: 1, name: "Quality Improvement", color: "#E53E3E", accent: "#FC8181", password: boothMap["Quality Improvement"] },
+  { id: 2, name: "Patient Safety",      color: "#3182CE", accent: "#63B3ED", password: boothMap["Patient Safety"]      },
+  { id: 3, name: "Innovation",          color: "#38A169", accent: "#68D391", password: boothMap["Innovation"]          },
+  { id: 4, name: "Sustainability",      color: "#DD6B20", accent: "#F6AD55", password: boothMap["Sustainability"]      },
+  { id: 5, name: "Experience",          color: "#805AD5", accent: "#B794F4", password: boothMap["Experience"]          },
+  { id: 6, name: "Staff Wellness",      color: "#0694A2", accent: "#76E4F7", password: boothMap["Staff Wellness"]      },
 ];
 
 const STORAGE_KEY = "passport-progress";
