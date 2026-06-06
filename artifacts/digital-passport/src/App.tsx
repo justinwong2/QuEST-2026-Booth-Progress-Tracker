@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle2, Lock, X, AlertCircle, Trophy, User, IdCard, Loader2 } from "lucide-react";
+import { CheckCircle2, Lock, X, AlertCircle, Trophy, User, IdCard, Loader2, QrCode } from "lucide-react";
+import { QRCodeSVG } from "qrcode.react";
 
 const SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbz6d_vrgxFcqGpxMqrYieueh8vN41lXHXxkjTO04A4EJ5iUlg2Dln_J_JoWOFaZrBw/exec";
@@ -88,6 +89,7 @@ export default function App() {
   const [logging, setLogging]           = useState(false);
   const [showCelebration, setShowCelebration] = useState(false);
   const [confirmReset, setConfirmReset] = useState(false);
+  const [showQr, setShowQr]             = useState(false);
 
   const inputRef    = useRef<HTMLInputElement>(null);
   const nicknameRef = useRef<HTMLInputElement>(null);
@@ -196,6 +198,17 @@ export default function App() {
             <p className="text-white/50 text-sm">Enter your details to start collecting stamps</p>
           </div>
 
+          {/* QR button on onboarding */}
+          <div className="mb-4">
+            <button
+              onClick={() => setShowQr(true)}
+              className="inline-flex items-center gap-2 text-xs text-white/40 hover:text-white/70 transition-colors border border-white/10 hover:border-white/20 rounded-full px-3 py-1.5"
+              data-testid="button-show-qr-onboard"
+            >
+              <QrCode size={13} /> Show QR Code
+            </button>
+          </div>
+
           {/* Card */}
           <div
             className="rounded-3xl p-7 border border-white/10 space-y-4"
@@ -286,8 +299,19 @@ export default function App() {
             <span className="text-white/40 text-xs">{visitor.staffId}</span>
           </p>
 
+          {/* QR code button */}
+          <div className="mt-4">
+            <button
+              onClick={() => setShowQr(true)}
+              className="inline-flex items-center gap-2 text-xs text-white/40 hover:text-white/70 transition-colors border border-white/10 hover:border-white/20 rounded-full px-3 py-1.5"
+              data-testid="button-show-qr"
+            >
+              <QrCode size={13} /> Show QR Code
+            </button>
+          </div>
+
           {/* Reset */}
-          <div className="mt-4 flex items-center justify-center gap-2">
+          <div className="mt-3 flex items-center justify-center gap-2">
             <AnimatePresence mode="wait">
               {!confirmReset ? (
                 <motion.button
@@ -575,6 +599,77 @@ export default function App() {
                     </div>
                   </>
                 )}
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* QR Code Modal */}
+      <AnimatePresence>
+        {showQr && (
+          <>
+            <motion.div
+              key="qr-backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-40"
+              style={{ background: "rgba(0,0,0,0.85)", backdropFilter: "blur(6px)" }}
+              onClick={() => setShowQr(false)}
+              data-testid="qr-backdrop"
+            />
+            <motion.div
+              key="qr-dialog"
+              initial={{ opacity: 0, scale: 0.85, y: 24 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.85, y: 24 }}
+              transition={{ type: "spring", damping: 22, stiffness: 280 }}
+              className="fixed inset-0 z-50 flex items-center justify-center px-6"
+              data-testid="qr-modal"
+            >
+              <div
+                className="w-full max-w-xs rounded-3xl p-8 border border-white/10 relative text-center"
+                style={{ background: "linear-gradient(135deg, #1e293b, #0f172a)", boxShadow: "0 0 80px rgba(99,102,241,0.25), 0 24px 64px rgba(0,0,0,0.8)" }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  onClick={() => setShowQr(false)}
+                  className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center text-white/40 hover:text-white/80 hover:bg-white/10 transition-all"
+                  data-testid="button-close-qr"
+                >
+                  <X size={16} />
+                </button>
+
+                <QrCode size={24} className="mx-auto mb-3 text-white/50" />
+                <h2 className="text-lg font-extrabold text-white mb-1">Scan to Open</h2>
+                <p className="text-white/40 text-xs mb-6">Show this at your event entrance</p>
+
+                {/* QR Code */}
+                <div className="flex justify-center mb-6">
+                  <div className="p-4 bg-white rounded-2xl">
+                    <QRCodeSVG
+                      value={window.location.href}
+                      size={200}
+                      bgColor="#ffffff"
+                      fgColor="#0f172a"
+                      level="M"
+                    />
+                  </div>
+                </div>
+
+                {/* URL display */}
+                <div
+                  className="rounded-xl px-3 py-2 border border-white/10 text-white/40 text-xs break-all select-all"
+                  style={{ background: "rgba(255,255,255,0.04)" }}
+                  data-testid="qr-url"
+                >
+                  {window.location.href}
+                </div>
+
+                <p className="text-white/25 text-xs mt-4">
+                  Visitors scan this to open their passport on their phone
+                </p>
               </div>
             </motion.div>
           </>
