@@ -16,12 +16,12 @@ const boothMap = {
 };
 
 const BOOTHS = [
-  { id: 1, name: "People Culture",                   sheetId: "booth1", color: "#E53E3E", accent: "#FC8181", password: boothMap["People Culture"]                   },
-  { id: 2, name: "Digital Think Tank",               sheetId: "booth2", color: "#3182CE", accent: "#63B3ED", password: boothMap["Digital Think Tank"]               },
-  { id: 3, name: "Quality Management",               sheetId: "booth3", color: "#38A169", accent: "#68D391", password: boothMap["Quality Management"]               },
-  { id: 4, name: "Manpower Transformation",          sheetId: "booth4", color: "#DD6B20", accent: "#F6AD55", password: boothMap["Manpower Transformation"]          },
-  { id: 5, name: "Appropriate and Value-Based Care", sheetId: "booth5", color: "#805AD5", accent: "#B794F4", password: boothMap["Appropriate and Value-Based Care"] },
-  { id: 6, name: "Enterprise Risk Management",       sheetId: "booth6", color: "#0694A2", accent: "#76E4F7", password: boothMap["Enterprise Risk Management"]       },
+  { id: 1, name: "People Culture",                   sheetId: "Booth1", color: "#E53E3E", accent: "#FC8181", password: boothMap["People Culture"]                   },
+  { id: 2, name: "Digital Think Tank",               sheetId: "Booth2", color: "#3182CE", accent: "#63B3ED", password: boothMap["Digital Think Tank"]               },
+  { id: 3, name: "Quality Management",               sheetId: "Booth3", color: "#38A169", accent: "#68D391", password: boothMap["Quality Management"]               },
+  { id: 4, name: "Manpower Transformation",          sheetId: "Booth4", color: "#DD6B20", accent: "#F6AD55", password: boothMap["Manpower Transformation"]          },
+  { id: 5, name: "Appropriate and Value-Based Care", sheetId: "Booth5", color: "#805AD5", accent: "#B794F4", password: boothMap["Appropriate and Value-Based Care"] },
+  { id: 6, name: "Enterprise Risk Management",       sheetId: "Booth6", color: "#0694A2", accent: "#76E4F7", password: boothMap["Enterprise Risk Management"]       },
 ];
 
 const STORAGE_KEY = "passport-progress";
@@ -228,7 +228,7 @@ export default function App() {
               </label>
               <input
                 type="text"
-                placeholder="e.g. S12345"
+                placeholder="e.g. 51234567"
                 value={staffId}
                 onChange={(e) => { setStaffId(e.target.value); setOnboardError(""); }}
                 onKeyDown={handleOnboardKeyDown}
