@@ -59,14 +59,16 @@ function saveVisitor(v: Visitor) {
   localStorage.setItem(VISITOR_KEY, JSON.stringify(v));
 }
 
-async function logToSheet(visitor: Visitor, boothName: string, sheetId: string) {
+async function logToSheet(visitor: Visitor, allProgress: Record<number, boolean>) {
   const params = new URLSearchParams({
-    nickname:  visitor.nickname,
-    staffId:   visitor.staffId,
-    boothId:   sheetId,
-    boothName,
-    status:    "done",
-    timestamp: new Date().toISOString(),
+    nickname: visitor.nickname,
+    staffId:  visitor.staffId,
+    Booth1:   allProgress[1] ? "done" : "",
+    Booth2:   allProgress[2] ? "done" : "",
+    Booth3:   allProgress[3] ? "done" : "",
+    Booth4:   allProgress[4] ? "done" : "",
+    Booth5:   allProgress[5] ? "done" : "",
+    Booth6:   allProgress[6] ? "done" : "",
   });
   try {
     await fetch(`${SCRIPT_URL}?${params.toString()}`, { method: "GET", mode: "no-cors" });
@@ -152,9 +154,9 @@ export default function App() {
       setTimeout(() => setStampedId(null), 1200);
       closeModal();
 
-      // Log to Google Sheet (fire-and-forget)
+      // Log to Google Sheet — send full progress snapshot (fire-and-forget)
       setLogging(true);
-      await logToSheet(visitor, booth.name, booth.sheetId);
+      await logToSheet(visitor, newProgress);
       setLogging(false);
     } else {
       setPwError("Wrong password, try again");
