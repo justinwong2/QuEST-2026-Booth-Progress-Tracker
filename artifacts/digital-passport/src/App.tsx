@@ -4,7 +4,7 @@ import { CheckCircle2, Lock, X, AlertCircle, Trophy, User, IdCard, Loader2, Refr
 import questLogo from "@assets/Screenshot_20260606_135247_Samsung_Browser_1780725399816.jpg";
 
 const SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbz6d_vrgxFcqGpxMqrYieueh8vN41lXHXxkjTO04A4EJ5iUlg2Dln_J_JoWOFaZrBw/exec";
+  "https://script.google.com/macros/s/AKfycby9zGu3y0bdEujXL9z3cDIW0xAla39BTjKbFCZvaADrnxZPHRFHk1ZQuKyqKOMApQGi/exec";
 
 const boothMap = {
   "People Culture":                    "culture1",
