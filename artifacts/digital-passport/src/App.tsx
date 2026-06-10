@@ -124,6 +124,10 @@ export default function App() {
   function startPassport() {
     if (!nickname.trim()) { setOnboardError("Please enter your nickname"); return; }
     if (!staffId.trim())  { setOnboardError("Please enter your Staff ID"); return; }
+    if (!/^\d{8}$/.test(staffId.trim())) {
+      setOnboardError("Staff ID must be exactly 8 digits (numbers only)");
+      return;
+    }
     const v = { nickname: nickname.trim(), staffId: staffId.trim() };
     saveVisitor(v);
     setVisitor(v);
