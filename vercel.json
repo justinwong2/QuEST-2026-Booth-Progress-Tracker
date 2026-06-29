@@ -1,10 +1,6 @@
 {
-  "installCommand": "pnpm install",
-  "buildCommand": "cd artifacts/digital-passport && pnpm run build",
+  "installCommand": "pnpm install --filter @workspace/digital-passport...",
+  "buildCommand": "pnpm --filter @workspace/digital-passport run build",
   "outputDirectory": "artifacts/digital-passport/dist/public",
-  "framework": null,
-  "env": {
-    "BASE_PATH": "/",
-    "PORT": "3000"
-  }
+  "framework": null
 }
