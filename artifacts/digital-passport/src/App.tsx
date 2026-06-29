@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle2, Lock, X, AlertCircle, Trophy, User, IdCard, Loader2, RefreshCw, Flag } from "lucide-react";
-import questLogo from "@assets/Screenshot_20260606_135247_Samsung_Browser_1780725399816.jpg";
+import questLogo from "@assets/quest-logo.jpg";
 
 const SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycby9zGu3y0bdEujXL9z3cDIW0xAla39BTjKbFCZvaADrnxZPHRFHk1ZQuKyqKOMApQGi/exec";
