@@ -15,12 +15,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const existing = await findUserByStaffId(staffId);
   if (existing) {
-    return res.status(200).json({ found: true, progress: existing.progress });
+    return res.status(200).json({ found: true, progress: existing.progress, rowIndex: existing.rowIndex });
   }
 
-  await createUser(staffId, normalizedNickname);
+  const rowIndex = await createUser(staffId, normalizedNickname);
   return res.status(200).json({
     found: false,
     progress: { 1: false, 2: false, 3: false, 4: false, 5: false, 6: false },
+    rowIndex,
   });
 }

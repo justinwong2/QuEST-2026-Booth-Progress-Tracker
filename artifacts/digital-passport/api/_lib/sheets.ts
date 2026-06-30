@@ -16,11 +16,26 @@ const SHEET_ID = process.env.GOOGLE_SHEET_ID!;
 // Sheet columns: A=nickname, B=staffId, C=Booth1 ... H=Booth6
 // Row 1 is the header; data starts at row 2.
 
+async function withRetry<T>(fn: () => Promise<T>, maxAttempts = 4): Promise<T> {
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    try {
+      return await fn();
+    } catch (err: any) {
+      const status = err?.response?.status ?? err?.status;
+      if (status !== 429 || attempt === maxAttempts - 1) throw err;
+      await new Promise((r) => setTimeout(r, 2 ** attempt * 1000));
+    }
+  }
+  throw new Error("unreachable");
+}
+
 export async function findUserByStaffId(staffId: string) {
-  const res = await sheets.spreadsheets.values.get({
-    spreadsheetId: SHEET_ID,
-    range: "Participants!A:H",
-  });
+  const res = await withRetry(() =>
+    sheets.spreadsheets.values.get({
+      spreadsheetId: SHEET_ID,
+      range: "Participants!A:H",
+    })
+  );
   const rows = res.data.values ?? [];
   for (let i = 1; i < rows.length; i++) {
     if (rows[i][1] === staffId) {
@@ -34,25 +49,40 @@ export async function findUserByStaffId(staffId: string) {
   return null;
 }
 
-export async function createUser(staffId: string, nickname: string) {
-  await sheets.spreadsheets.values.append({
-    spreadsheetId: SHEET_ID,
-    range: "Participants!A:H",
-    valueInputOption: "RAW",
-    requestBody: { values: [[nickname, staffId, "", "", "", "", "", ""]] },
-  });
+export async function createUser(staffId: string, nickname: string): Promise<number> {
+  const res = await withRetry(() =>
+    sheets.spreadsheets.values.append({
+      spreadsheetId: SHEET_ID,
+      range: "Participants!A:H",
+      valueInputOption: "RAW",
+      requestBody: { values: [[nickname, staffId, "", "", "", "", "", ""]] },
+    })
+  );
+  // updatedRange is like "Participants!A5:H5" — parse the row number
+  const updatedRange = res.data.updates?.updatedRange;
+  if (updatedRange) {
+    const cellRef = updatedRange.split("!")[1]?.split(":")[0]; // e.g. "A5"
+    const row = cellRef ? parseInt(cellRef.replace(/[A-Z]/g, ""), 10) : -1;
+    if (!isNaN(row)) return row;
+  }
+  return -1;
 }
 
-export async function updateBoothInSheet(staffId: string, boothNumber: number) {
-  const user = await findUserByStaffId(staffId);
-  if (!user) return false;
-  // Booth 1 → column C (index 2), Booth 2 → D, ..., Booth 6 → H
+export async function updateBoothInSheet(
+  staffId: string,
+  boothNumber: number,
+  rowIndex?: number,
+): Promise<boolean> {
+  const row = rowIndex ?? (await findUserByStaffId(staffId))?.rowIndex;
+  if (!row || row < 0) return false;
   const col = String.fromCharCode("C".charCodeAt(0) + boothNumber - 1);
-  await sheets.spreadsheets.values.update({
-    spreadsheetId: SHEET_ID,
-    range: `Participants!${col}${user.rowIndex}`,
-    valueInputOption: "RAW",
-    requestBody: { values: [["done"]] },
-  });
+  await withRetry(() =>
+    sheets.spreadsheets.values.update({
+      spreadsheetId: SHEET_ID,
+      range: `Participants!${col}${row}`,
+      valueInputOption: "RAW",
+      requestBody: { values: [["done"]] },
+    })
+  );
   return true;
 }

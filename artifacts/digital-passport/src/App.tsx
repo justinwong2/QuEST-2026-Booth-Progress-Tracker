@@ -28,6 +28,7 @@ const VISITOR_KEY  = "passport-visitor";
 interface Visitor {
   nickname: string;
   staffId: string;
+  rowIndex?: number;
 }
 
 interface ModalState {
@@ -60,7 +61,7 @@ function saveVisitor(v: Visitor) {
 async function createOrRestoreUser(
   staffId: string,
   nickname: string,
-): Promise<{ found: boolean; progress: Record<number, boolean> }> {
+): Promise<{ found: boolean; progress: Record<number, boolean>; rowIndex?: number }> {
   try {
     const res = await fetch("/api/users", {
       method: "POST",
@@ -73,9 +74,13 @@ async function createOrRestoreUser(
   }
 }
 
-async function completeBooth(staffId: string, boothId: number): Promise<void> {
+async function completeBooth(staffId: string, boothId: number, rowIndex?: number): Promise<void> {
   try {
-    await fetch(`/api/users/${staffId}/booths/${boothId}`, { method: "PATCH" });
+    await fetch(`/api/users/${staffId}/booths/${boothId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ rowIndex }),
+    });
   } catch {
     // fire-and-forget
   }
@@ -140,6 +145,13 @@ export default function App() {
     setLogging(true);
     const result = await createOrRestoreUser(v.staffId, v.nickname);
     setLogging(false);
+
+    if (result.rowIndex) {
+      const vWithRow = { ...v, rowIndex: result.rowIndex };
+      saveVisitor(vWithRow);
+      setVisitor(vWithRow);
+    }
+
     if (result.found) {
       const restored: Record<number, boolean> = {};
       for (let i = 1; i <= 6; i++) restored[i] = !!result.progress[i];
@@ -172,7 +184,7 @@ export default function App() {
       setStampedId(booth.id);
       setTimeout(() => setStampedId(null), 1200);
       closeModal();
-      completeBooth(visitor.staffId, booth.id);
+      completeBooth(visitor.staffId, booth.id, visitor.rowIndex);
     } else {
       setPwError("Wrong password, try again");
       setPassword("");

@@ -13,7 +13,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ error: "Invalid booth ID" });
   }
 
-  const updated = await updateBoothInSheet(staffId, boothNumber);
+  const { rowIndex } = (req.body ?? {}) as { rowIndex?: number };
+  const updated = await updateBoothInSheet(staffId, boothNumber, rowIndex);
   if (!updated) {
     return res.status(404).json({ error: "User not found" });
   }
