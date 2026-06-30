@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { findUserByStaffId, createUser } from "./_lib/sheets.js";
+import { findUserByStaffId, createUser } from "./_lib/sheets";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
