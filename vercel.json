@@ -1,7 +1,7 @@
 {
   "installCommand": "pnpm install",
-  "buildCommand": "pnpm --filter @workspace/digital-passport run build",
-  "outputDirectory": "artifacts/digital-passport/dist/public",
+  "buildCommand": "pnpm run build",
+  "outputDirectory": "dist/public",
   "framework": null,
   "rewrites": [
     { "source": "/((?!api/).*)", "destination": "/index.html" }
