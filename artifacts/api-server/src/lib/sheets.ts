@@ -8,5 +8,7 @@ const auth = new google.auth.GoogleAuth({
   scopes: ["https://www.googleapis.com/auth/spreadsheets"],
 });
 
-export const sheets = google.sheets({ version: "v4", auth });
+google.options({ auth });
+
+export const sheets = google.sheets("v4");
 export const SHEET_ID = process.env.GOOGLE_SHEET_ID!;

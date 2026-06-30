@@ -8,7 +8,9 @@ const auth = new google.auth.GoogleAuth({
   scopes: ["https://www.googleapis.com/auth/spreadsheets"],
 });
 
-const sheets = google.sheets({ version: "v4", auth });
+google.options({ auth });
+
+const sheets = google.sheets("v4");
 const SHEET_ID = process.env.GOOGLE_SHEET_ID!;
 
 // Sheet columns: A=nickname, B=staffId, C=Booth1 ... H=Booth6
