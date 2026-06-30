@@ -19,7 +19,7 @@ const SHEET_ID = process.env.GOOGLE_SHEET_ID!;
 export async function findUserByStaffId(staffId: string) {
   const res = await sheets.spreadsheets.values.get({
     spreadsheetId: SHEET_ID,
-    range: "Sheet1!A:H",
+    range: "Participants!A:H",
   });
   const rows = res.data.values ?? [];
   for (let i = 1; i < rows.length; i++) {
@@ -37,7 +37,7 @@ export async function findUserByStaffId(staffId: string) {
 export async function createUser(staffId: string, nickname: string) {
   await sheets.spreadsheets.values.append({
     spreadsheetId: SHEET_ID,
-    range: "Sheet1!A:H",
+    range: "Participants!A:H",
     valueInputOption: "RAW",
     requestBody: { values: [[nickname, staffId, "", "", "", "", "", ""]] },
   });
@@ -50,7 +50,7 @@ export async function updateBoothInSheet(staffId: string, boothNumber: number) {
   const col = String.fromCharCode("C".charCodeAt(0) + boothNumber - 1);
   await sheets.spreadsheets.values.update({
     spreadsheetId: SHEET_ID,
-    range: `Sheet1!${col}${user.rowIndex}`,
+    range: `Participants!${col}${user.rowIndex}`,
     valueInputOption: "RAW",
     requestBody: { values: [["done"]] },
   });
