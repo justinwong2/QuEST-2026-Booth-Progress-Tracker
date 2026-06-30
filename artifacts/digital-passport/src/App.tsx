@@ -3,8 +3,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle2, Lock, X, AlertCircle, Trophy, User, IdCard, Loader2, RefreshCw, Flag } from "lucide-react";
 import questLogo from "@assets/quest-logo.jpg";
 
-const SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycby9zGu3y0bdEujXL9z3cDIW0xAla39BTjKbFCZvaADrnxZPHRFHk1ZQuKyqKOMApQGi/exec";
 
 const boothMap = {
   "People Culture":                    "culture1",
@@ -59,21 +57,27 @@ function saveVisitor(v: Visitor) {
   localStorage.setItem(VISITOR_KEY, JSON.stringify(v));
 }
 
-async function logToSheet(visitor: Visitor, allProgress: Record<number, boolean>) {
-  const params = new URLSearchParams({
-    nickname: visitor.nickname,
-    staffId:  visitor.staffId,
-    Booth1:   allProgress[1] ? "done" : "",
-    Booth2:   allProgress[2] ? "done" : "",
-    Booth3:   allProgress[3] ? "done" : "",
-    Booth4:   allProgress[4] ? "done" : "",
-    Booth5:   allProgress[5] ? "done" : "",
-    Booth6:   allProgress[6] ? "done" : "",
-  });
+async function createOrRestoreUser(
+  staffId: string,
+  nickname: string,
+): Promise<{ found: boolean; progress: Record<number, boolean> }> {
   try {
-    await fetch(`${SCRIPT_URL}?${params.toString()}`, { method: "GET", mode: "no-cors" });
+    const res = await fetch("/api/users", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ staffId, nickname }),
+    });
+    return await res.json();
   } catch {
-    // no-cors means we can't read the response; fire-and-forget is fine
+    return { found: false, progress: {} };
+  }
+}
+
+async function completeBooth(staffId: string, boothId: number): Promise<void> {
+  try {
+    await fetch(`/api/users/${staffId}/booths/${boothId}`, { method: "PATCH" });
+  } catch {
+    // fire-and-forget
   }
 }
 
@@ -121,7 +125,7 @@ export default function App() {
     setConfirmReset(false);
   }
 
-  function startPassport() {
+  async function startPassport() {
     if (!nickname.trim()) { setOnboardError("Please enter your nickname"); return; }
     if (!staffId.trim())  { setOnboardError("Please enter your Staff ID"); return; }
     if (!/^\d{8}$/.test(staffId.trim())) {
@@ -131,6 +135,17 @@ export default function App() {
     const v = { nickname: nickname.trim(), staffId: staffId.trim() };
     saveVisitor(v);
     setVisitor(v);
+
+    // Check sheet for existing progress and restore if found
+    setLogging(true);
+    const result = await createOrRestoreUser(v.staffId, v.nickname);
+    setLogging(false);
+    if (result.found) {
+      const restored: Record<number, boolean> = {};
+      for (let i = 1; i <= 6; i++) restored[i] = !!result.progress[i];
+      setProgress(restored);
+      saveProgress(restored);
+    }
   }
 
   function openBooth(id: number) {
@@ -157,11 +172,7 @@ export default function App() {
       setStampedId(booth.id);
       setTimeout(() => setStampedId(null), 1200);
       closeModal();
-
-      // Log to Google Sheet — send full progress snapshot (fire-and-forget)
-      setLogging(true);
-      await logToSheet(visitor, newProgress);
-      setLogging(false);
+      completeBooth(visitor.staffId, booth.id);
     } else {
       setPwError("Wrong password, try again");
       setPassword("");

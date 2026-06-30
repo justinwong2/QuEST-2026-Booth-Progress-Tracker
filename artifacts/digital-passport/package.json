@@ -41,13 +41,13 @@
     "@replit/vite-plugin-cartographer": "catalog:",
     "@replit/vite-plugin-dev-banner": "catalog:",
     "@replit/vite-plugin-runtime-error-modal": "catalog:",
-    "qrcode.react": "^4.2.0",
     "@tailwindcss/typography": "^0.5.15",
     "@tailwindcss/vite": "catalog:",
     "@tanstack/react-query": "catalog:",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
+    "@vercel/node": "^5.8.22",
     "@vitejs/plugin-react": "catalog:",
     "class-variance-authority": "catalog:",
     "clsx": "catalog:",
@@ -58,6 +58,7 @@
     "input-otp": "^1.4.2",
     "lucide-react": "catalog:",
     "next-themes": "^0.4.6",
+    "qrcode.react": "^4.2.0",
     "react": "catalog:",
     "react-day-picker": "^9.11.1",
     "react-dom": "catalog:",
@@ -73,5 +74,8 @@
     "vite": "catalog:",
     "wouter": "^3.3.5",
     "zod": "catalog:"
+  },
+  "dependencies": {
+    "googleapis": "^173.0.0"
   }
 }
